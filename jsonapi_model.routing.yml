@@ -1,0 +1,2 @@
+route_callbacks:
+  - '\Drupal\jsonapi_model\Routing\Routes::routes'

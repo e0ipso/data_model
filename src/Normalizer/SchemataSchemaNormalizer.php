@@ -1,0 +1,93 @@
+<?php
+
+namespace Drupal\jsonapi_model\Normalizer;
+
+use Drupal\Core\Url;
+use Drupal\jsonapi_model\Schema\SchemaInterface;
+use Drupal\Component\Utility\NestedArray;
+
+/**
+ * Primary normalizer for SchemaInterface objects.
+ */
+class SchemataSchemaNormalizer extends NormalizerBase {
+
+  /**
+   * The interface or class that this Normalizer supports.
+   *
+   * @var string
+   */
+  protected $supportedInterfaceOrClass = 'Drupal\jsonapi_model\Schema\SchemaInterface';
+
+  /**
+   * The media type that are described by this schema.
+   *
+   * @var string
+   */
+  protected $describedMediaType = 'application/json';
+
+  /**
+   * {@inheritdoc}
+   */
+  public function supportsNormalization($data, $format = NULL) {
+    return parent::supportsNormalization($data, $format) && $this->describedMediaType == $data->getDescribedMediaType();
+  }
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public function normalize($entity, $format = NULL, array $context = []) {
+    $entity_type_id = $entity->getEntityTypeId();
+    $bundle = $entity->getBundleId();
+    // Create the array of normalized fields, starting with the URI.
+    /* @var $entity \Drupal\jsonapi_model\Schema\SchemaInterface */
+    $route_name = $bundle ?
+      sprintf('data-model.%s:%s', $entity_type_id, $bundle) :
+      sprintf('data-model.%s', $entity_type_id);
+    $generated_url = Url::fromRoute($route_name, [], ['absolute' => TRUE])
+      ->toString(TRUE);
+    $normalized = [
+      '$schema' => 'http://json-schema.org/draft-04/schema#',
+      'id' => $generated_url->getGeneratedUrl(),
+      'type' => 'object',
+    ];
+    $normalized = array_merge($normalized, $entity->getMetadata());
+
+    // Stash schema request parameters.
+    $context['entityTypeId'] = $entity_type_id;
+    $context['bundleId'] = $bundle;
+
+    // Retrieve 'properties' and possibly 'required' nested arrays.
+    $properties = $this->normalizeProperties(
+      $this->getProperties($entity, $format, $context),
+      $format,
+      $context
+    );
+    $normalized = NestedArray::mergeDeep($normalized, $properties);
+
+    return $normalized;
+  }
+
+  /**
+   * Identify properties of the data definition to normalize.
+   *
+   * This allow subclasses of the normalizer to build white or blacklisting
+   * functionality on what will be included in the serialized schema. The JSON
+   * Schema serializer already has logic to drop any properties that are empty
+   * values after processing, but this allows cleaner, centralized logic.
+   *
+   * @param \Drupal\jsonapi_model\Schema\SchemaInterface $entity
+   *   The Schema object whose properties the serializer will present.
+   * @param string $format
+   *   The serializer format. Defaults to NULL.
+   * @param array $context
+   *   The current serializer context.
+   *
+   * @return \Drupal\Core\TypedData\DataDefinitionInterface[]
+   *   The DataDefinitions to be processed.
+   */
+  protected static function getProperties(SchemaInterface $entity, $format = NULL, $context = []) {
+    return $entity->getProperties();
+  }
+
+}
