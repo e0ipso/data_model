@@ -1,10 +1,11 @@
 <?php
 
-namespace Drupal\jsonapi_model\Controller;
+namespace Drupal\data_model\Controller;
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Cache\CacheableResponse;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\jsonapi_model\SchemaFactory;
+use Drupal\data_model\SchemaFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -17,7 +18,7 @@ class Controller extends ControllerBase {
   protected $serializer;
 
   /**
-   * @var \Drupal\jsonapi_model\SchemaFactory
+   * @var \Drupal\data_model\SchemaFactory
    */
   protected $schemaFactory;
 
@@ -30,7 +31,7 @@ class Controller extends ControllerBase {
    * Controller constructor.
    *
    * @param \Symfony\Component\Serializer\SerializerInterface $serializer
-   * @param \Drupal\jsonapi_model\SchemaFactory $typed_data_manager
+   * @param \Drupal\data_model\SchemaFactory $typed_data_manager
    * @param \Drupal\Core\Cache\CacheableResponse $response
    */
   public function __construct(SerializerInterface $serializer, SchemaFactory $schema_factory, CacheableResponse $response) {
@@ -45,7 +46,7 @@ class Controller extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('serializer'),
-      $container->get('jsonapi_model.schema_factory'),
+      $container->get('data_model.schema_factory'),
       new CacheableResponse()
     );
   }
@@ -72,20 +73,24 @@ class Controller extends ControllerBase {
   public function serialize($entity_type_id, $bundle, Request $request) {
     // For now, we'll manually inspect the Accept header in the controller. This
     // is not a great idea, but will do for now.
-    list($format, $described_media_type) = $this->parseFormatNames($request);
+    list($data_format, $described_media_type) = $this->parseFormatNames($request);
 
     // Load the data to serialize from the route information on the current
     // request.
-    $schema = $this->schemaFactory->create($entity_type_id, $bundle, $described_media_type);
+    $schema = $this->schemaFactory->create($entity_type_id, $bundle);
     // Serialize the entity type/bundle definition.
+    $format = sprintf('%s:%s', $data_format, $described_media_type);
     $content = $this->serializer->serialize($schema, $format, [
       'described_media_type' => $described_media_type,
     ]);
 
     // Finally, set the contents of the response and return it.
     $this->response->addCacheableDependency($schema);
+    $cacheable_dependency = (new CacheableMetadata())
+      ->addCacheContexts(['headers:Accept']);
+    $this->response->addCacheableDependency($cacheable_dependency);
     $this->response->setContent($content);
-    $this->response->headers->set('Content-Type', $request->getMimeType($format));
+    $this->response->headers->set('Content-Type', $request->getMimeType($data_format));
     return $this->response;
   }
 

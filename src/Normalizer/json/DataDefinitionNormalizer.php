@@ -1,8 +1,9 @@
 <?php
 
-namespace Drupal\jsonapi_model\Normalizer;
+namespace Drupal\data_model\Normalizer\json;
 
 use Drupal\Core\TypedData\DataDefinitionInterface;
+use Drupal\data_model\Normalizer\NormalizerBase;
 
 /**
  * Normalizer for DataDefinitionInterface instances.
@@ -15,7 +16,7 @@ use Drupal\Core\TypedData\DataDefinitionInterface;
  * DataDefinitionNormalizer produces scalar value definitions.
  *
  * Unlike the other Normalizer services in the JSON Schema module, this one is
- * used by the hal_jsonapi_model normalizer. It is unlikely divergent requirements
+ * used by the hal_data_model normalizer. It is unlikely divergent requirements
  * will develop.
  *
  * All the TypedData normalizers extend from this class.

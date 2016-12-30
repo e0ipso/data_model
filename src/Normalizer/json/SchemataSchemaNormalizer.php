@@ -1,9 +1,10 @@
 <?php
 
-namespace Drupal\jsonapi_model\Normalizer;
+namespace Drupal\data_model\Normalizer\json;
 
 use Drupal\Core\Url;
-use Drupal\jsonapi_model\Schema\SchemaInterface;
+use Drupal\data_model\Normalizer\NormalizerBase;
+use Drupal\data_model\Schema\SchemaInterface;
 use Drupal\Component\Utility\NestedArray;
 
 /**
@@ -16,22 +17,7 @@ class SchemataSchemaNormalizer extends NormalizerBase {
    *
    * @var string
    */
-  protected $supportedInterfaceOrClass = 'Drupal\jsonapi_model\Schema\SchemaInterface';
-
-  /**
-   * The media type that are described by this schema.
-   *
-   * @var string
-   */
-  protected $describedMediaType = 'application/json';
-
-  /**
-   * {@inheritdoc}
-   */
-  public function supportsNormalization($data, $format = NULL) {
-    return parent::supportsNormalization($data, $format) && $this->describedMediaType == $data->getDescribedMediaType();
-  }
-
+  protected $supportedInterfaceOrClass = 'Drupal\data_model\Schema\SchemaInterface';
 
   /**
    * {@inheritdoc}
@@ -40,7 +26,7 @@ class SchemataSchemaNormalizer extends NormalizerBase {
     $entity_type_id = $entity->getEntityTypeId();
     $bundle = $entity->getBundleId();
     // Create the array of normalized fields, starting with the URI.
-    /* @var $entity \Drupal\jsonapi_model\Schema\SchemaInterface */
+    /* @var $entity \Drupal\data_model\Schema\SchemaInterface */
     $route_name = $bundle ?
       sprintf('data-model.%s:%s', $entity_type_id, $bundle) :
       sprintf('data-model.%s', $entity_type_id);
@@ -76,7 +62,7 @@ class SchemataSchemaNormalizer extends NormalizerBase {
    * Schema serializer already has logic to drop any properties that are empty
    * values after processing, but this allows cleaner, centralized logic.
    *
-   * @param \Drupal\jsonapi_model\Schema\SchemaInterface $entity
+   * @param \Drupal\data_model\Schema\SchemaInterface $entity
    *   The Schema object whose properties the serializer will present.
    * @param string $format
    *   The serializer format. Defaults to NULL.

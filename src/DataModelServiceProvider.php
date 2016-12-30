@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\jsonapi_model;
+namespace Drupal\data_model;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\ServiceModifierInterface;
@@ -8,7 +8,7 @@ use Drupal\Core\DependencyInjection\ServiceModifierInterface;
 /**
  * Adds api_json as known format.
  */
-class JsonapiModelServiceProvider implements ServiceModifierInterface {
+class DataModelServiceProvider implements ServiceModifierInterface {
 
   /**
    * {@inheritdoc}

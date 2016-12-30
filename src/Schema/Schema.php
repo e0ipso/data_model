@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\jsonapi_model\Schema;
+namespace Drupal\data_model\Schema;
 
 use Drupal\Core\TypedData\DataDefinitionInterface;
 use Drupal\Core\Entity\TypedData\EntityDataDefinitionInterface;
@@ -56,13 +56,6 @@ class Schema implements SchemaInterface, RefinableCacheableDependencyInterface {
   protected $properties = [];
 
   /**
-   * Described media type.
-   *
-   * @var string
-   */
-  protected $describedMediaType;
-
-  /**
    * Creates a Schema object.
    *
    * @param \Drupal\Core\Entity\TypedData\EntityDataDefinitionInterface $entity_type
@@ -74,7 +67,7 @@ class Schema implements SchemaInterface, RefinableCacheableDependencyInterface {
    * @param \Drupal\Core\TypedData\DataDefinitionInterface[] $properties
    *   Typed data properties for the schema's initial creation.
    */
-  public function __construct(EntityDataDefinitionInterface $entity_type, $bundle = NULL, $described_media_type, $properties = []) {
+  public function __construct(EntityDataDefinitionInterface $entity_type, $bundle = NULL, $properties = []) {
     $this->entityType = $entity_type;
     $this->bundle = $bundle;
     $this->addProperties($properties);
@@ -93,14 +86,12 @@ class Schema implements SchemaInterface, RefinableCacheableDependencyInterface {
     $this->metadata['title'] = $this->createTitle(
       $this->getEntityTypeId(),
       $this->getBundleId()
-    ) . ' Schema in ' . $described_media_type . ' format';
+    ) . ' Schema';
 
     $this->metadata['description'] = $this->createDescription(
       $this->getEntityTypeId(),
       $this->getBundleId()
     );
-
-    $this->describedMediaType = $described_media_type;
 
   }
 
@@ -137,13 +128,6 @@ class Schema implements SchemaInterface, RefinableCacheableDependencyInterface {
    */
   public function getMetadata() {
     return $this->metadata;
-  }
-
-  /**
-   * @return string
-   */
-  public function getDescribedMediaType() {
-    return $this->describedMediaType;
   }
 
   /**

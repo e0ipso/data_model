@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\jsonapi_model\Encoder;
+namespace Drupal\data_model\Encoder;
 
 use Drupal\jsonapi\Normalizer\Value\ValueExtractorInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder as SymfonyJsonEncoder;
@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder as SymfonyJsonEncoder;
  *
  * Simply respond to application/vnd.api+json format requests using encoder.
  */
-class JsonEncoder extends SymfonyJsonEncoder {
+class JsonSchemaEncoder extends SymfonyJsonEncoder {
 
   /**
    * The formats that this Encoder supports.
@@ -23,14 +23,15 @@ class JsonEncoder extends SymfonyJsonEncoder {
    * {@inheritdoc}
    */
   public function supportsEncoding($format) {
-    return $format == $this->format;
+    list($data_format,) = explode(':', $format);
+    return $data_format == $this->format;
   }
 
   /**
    * {@inheritdoc}
    */
   public function supportsDecoding($format) {
-    return $format == $this->format;
+    return FALSE;
   }
 
 }

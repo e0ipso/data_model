@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\jsonapi_model\Schema;
+namespace Drupal\data_model\Schema;
 
 /**
  * Requirements for a Schema to interact with Schema utilities and serializers.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\jsonapi_model\Normalizer;
+namespace Drupal\data_model\Normalizer;
 
 use Drupal\Core\TypedData\DataDefinitionInterface;
 use Drupal\serialization\Normalizer\NormalizerBase as SerializationNormalizerBase;
@@ -17,14 +17,14 @@ abstract class NormalizerBase extends SerializationNormalizerBase implements Den
    *
    * @var array
    */
-  protected $formats = ['schema_json'];
+  protected $format = 'schema_json';
 
   /**
-   * {@inheritdoc}
+   * The formats that the Normalizer can handle.
+   *
+   * @var array
    */
-  public function supportsNormalization($data, $format = NULL) {
-    return in_array($format, $this->formats) && parent::supportsNormalization($data, $format);
-  }
+  protected $describedMediaType = 'application/json';
 
   /**
    * {@inheritdoc}
@@ -87,4 +87,15 @@ abstract class NormalizerBase extends SerializationNormalizerBase implements Den
     return $property->isReadOnly() || $property->isRequired();
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  protected function checkFormat($format = NULL) {
+    if (!isset($format) || !isset($this->format)) {
+      return TRUE;
+    }
+
+    list($data_format, $described_media_type) = explode(':', $format);
+    return $data_format == $this->format && $this->describedMediaType == $described_media_type;
+  }
 }

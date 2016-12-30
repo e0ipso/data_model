@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\jsonapi_model\Normalizer;
+namespace Drupal\data_model\Normalizer\json;
 
-use Drupal\jsonapi_model\Normalizer\DataDefinitionNormalizer;
 use Drupal\Core\TypedData\ComplexDataDefinitionInterface;
 use Drupal\Core\TypedData\DataReferenceTargetDefinition;
 use Drupal\Core\TypedData\ListDataDefinitionInterface;
+
 /**
  * Normalizer for ListDataDefinitionInterface objects.
  *

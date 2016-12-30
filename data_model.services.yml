@@ -1,17 +1,17 @@
 services:
-  serializer.encoder.jsonapi:
-    class: Drupal\jsonapi_model\Encoder\JsonEncoder
+  serializer.encoder.json_schema:
+    class: Drupal\data_model\Encoder\JsonSchemaEncoder
     tags:
       - { name: encoder, priority: 22, format: 'schema_json' }
 
   # Assemble Schemas based on entity type definitions. As a standalone class,
   # the SchemaFactory can be pulled in to custom menu routes, drush commands,
   # and REST plugins. The SchemaFactory::create() creates instances of
-  # Drupal\jsonapi_model\Schema\SchemaInterface.
-  jsonapi_model.schema_factory:
-    class: Drupal\jsonapi_model\SchemaFactory
+  # Drupal\data_model\Schema\SchemaInterface.
+  data_model.schema_factory:
+    class: Drupal\data_model\SchemaFactory
     arguments:
-      - @logger.channel.jsonapi_model
+      - @logger.channel.data_model
       - @entity_type.manager
       - @entity_type.bundle.info
       - @typed_data_manager
@@ -20,16 +20,16 @@ services:
   # Create a log channel for this module. This simplifies logging setup code in
   # this code that will do logging. As a tradeoff, it also adds this fairly
   # specific logging channel to the system for all requests.
-  logger.channel.jsonapi_model:
+  logger.channel.data_model:
     parent: logger.channel_base
-    arguments: ['jsonapi_model']
+    arguments: ['data_model']
 
   # References should be converted to other schema resources for the type.
   # This priority ensures the DataReferenceDefinition is handled before
   # DataDefinition. Since it is orthogonal to ComplexDataDefinition, they share
   # the same priority.
   serializer.normalizer.data_reference_definition.schema_json:
-    class: Drupal\jsonapi_model\Normalizer\DataReferenceDefinitionNormalizer
+    class: Drupal\data_model\Normalizer\json\DataReferenceDefinitionNormalizer
     arguments: ['@entity_type.manager']
     tags:
       - { name: normalizer, priority: 25 }
@@ -39,7 +39,7 @@ services:
   # DataDefinition. Since it is orthagonal to DataReferenceDefinition, they
   # share the same priority.
   serializer.normalizer.complex_data_definition.schema_json:
-    class: Drupal\jsonapi_model\Normalizer\ComplexDataDefinitionNormalizer
+    class: Drupal\data_model\Normalizer\json\ComplexDataDefinitionNormalizer
     tags:
       - { name: normalizer, priority: 20 }
 
@@ -48,26 +48,25 @@ services:
   # a subclass of ListDataDefinitionInterface, FieldDefinitionInterface needs a
   # higher priority.
   serializer.normalizer.field_definition.schema_json:
-    class: Drupal\jsonapi_model\Normalizer\FieldDefinitionNormalizer
+    class: Drupal\data_model\Normalizer\json\FieldDefinitionNormalizer
     tags:
       - { name: normalizer, priority: 30 }
 
   # If the typed data definition is a list (as most are somewhere along the
   # property hierarchy) this triggers the recursion to the next layer.
   serializer.normalizer.list_data_definition.schema_json:
-    class: Drupal\jsonapi_model\Normalizer\ListDataDefinitionNormalizer
+    class: Drupal\data_model\Normalizer\json\ListDataDefinitionNormalizer
     tags:
       - { name: normalizer, priority: 20 }
 
   # Typed data definitions in general can take many forms. This handles final items.
   serializer.normalizer.data_definition.schema_json:
-    class: Drupal\jsonapi_model\Normalizer\DataDefinitionNormalizer
+    class: Drupal\data_model\Normalizer\json\DataDefinitionNormalizer
     tags:
       - { name: normalizer, priority: 10 }
 
   # This is the main JSON Schema normalizer.
   serializer.normalizer.schema.schema_json:
-    class: Drupal\jsonapi_model\Normalizer\SchemataSchemaNormalizer
+    class: Drupal\data_model\Normalizer\json\SchemataSchemaNormalizer
     tags:
       - { name: normalizer, priority: 10 }
-

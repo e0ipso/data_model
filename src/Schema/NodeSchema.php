@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\jsonapi_model\Schema;
+namespace Drupal\data_model\Schema;
 
 use Drupal\node\Entity\NodeType;
 use Drupal\Core\Entity\TypedData\EntityDataDefinitionInterface;
@@ -22,9 +22,9 @@ class NodeSchema extends Schema {
   /**
    * {@inheritdoc}
    */
-  public function __construct(EntityDataDefinitionInterface $entity_type, $bundle = NULL, $described_media_type, $properties = []) {
+  public function __construct(EntityDataDefinitionInterface $entity_type, $bundle = NULL, $properties = []) {
     $this->nodeType = NodeType::load($bundle);
-    parent::__construct($entity_type, $bundle, $described_media_type, $properties);
+    parent::__construct($entity_type, $bundle, $properties);
   }
 
   /**

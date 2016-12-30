@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Drupal\jsonapi_model\Routing;
+namespace Drupal\data_model\Routing;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
@@ -25,7 +25,7 @@ class Routes implements ContainerInjectionInterface {
    *
    * @var string
    */
-  const CONTROLLER = '\Drupal\jsonapi_model\Controller\Controller::serialize';
+  const CONTROLLER = '\Drupal\data_model\Controller\Controller::serialize';
 
   /**
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
