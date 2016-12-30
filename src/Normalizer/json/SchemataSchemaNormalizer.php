@@ -3,14 +3,13 @@
 namespace Drupal\data_model\Normalizer\json;
 
 use Drupal\Core\Url;
-use Drupal\data_model\Normalizer\NormalizerBase;
 use Drupal\data_model\Schema\SchemaInterface;
 use Drupal\Component\Utility\NestedArray;
 
 /**
  * Primary normalizer for SchemaInterface objects.
  */
-class SchemataSchemaNormalizer extends NormalizerBase {
+class SchemataSchemaNormalizer extends JsonNormalizerBase {
 
   /**
    * The interface or class that this Normalizer supports.

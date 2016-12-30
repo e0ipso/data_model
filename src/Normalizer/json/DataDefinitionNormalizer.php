@@ -3,7 +3,6 @@
 namespace Drupal\data_model\Normalizer\json;
 
 use Drupal\Core\TypedData\DataDefinitionInterface;
-use Drupal\data_model\Normalizer\NormalizerBase;
 
 /**
  * Normalizer for DataDefinitionInterface instances.
@@ -21,7 +20,7 @@ use Drupal\data_model\Normalizer\NormalizerBase;
  *
  * All the TypedData normalizers extend from this class.
  */
-class DataDefinitionNormalizer extends NormalizerBase {
+class DataDefinitionNormalizer extends JsonNormalizerBase {
 
   /**
    * The formats that the Normalizer can handle.

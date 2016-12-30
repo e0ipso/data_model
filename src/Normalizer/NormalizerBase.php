@@ -13,20 +13,6 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 abstract class NormalizerBase extends SerializationNormalizerBase implements DenormalizerInterface {
 
   /**
-   * The formats that the Normalizer can handle.
-   *
-   * @var array
-   */
-  protected $format = 'schema_json';
-
-  /**
-   * The formats that the Normalizer can handle.
-   *
-   * @var array
-   */
-  protected $describedMediaType = 'application/json';
-
-  /**
    * {@inheritdoc}
    */
   public function supportsDenormalization($data, $type, $format = NULL) {
@@ -37,7 +23,7 @@ abstract class NormalizerBase extends SerializationNormalizerBase implements Den
    * {@inheritdoc}
    */
   public function denormalize($data, $class, $format = NULL, array $context = []) {
-    return FALSE;
+    throw new \RuntimeException('Denormalization is not supported.');
   }
 
   /**
@@ -98,4 +84,5 @@ abstract class NormalizerBase extends SerializationNormalizerBase implements Den
     list($data_format, $described_media_type) = explode(':', $format);
     return $data_format == $this->format && $this->describedMediaType == $described_media_type;
   }
+
 }
