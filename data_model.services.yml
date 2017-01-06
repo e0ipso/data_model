@@ -28,7 +28,7 @@ services:
   # This priority ensures the DataReferenceDefinition is handled before
   # DataDefinition. Since it is orthogonal to ComplexDataDefinition, they share
   # the same priority.
-  serializer.normalizer.data_reference_definition.schema_json:
+  serializer.normalizer.data_reference_definition.schema_json.json:
     class: Drupal\data_model\Normalizer\json\DataReferenceDefinitionNormalizer
     arguments: ['@entity_type.manager']
     tags:
@@ -38,7 +38,7 @@ services:
   # This priority ensures the ComplexDataDefinition is handled before
   # DataDefinition. Since it is orthagonal to DataReferenceDefinition, they
   # share the same priority.
-  serializer.normalizer.complex_data_definition.schema_json:
+  serializer.normalizer.complex_data_definition.schema_json.json:
     class: Drupal\data_model\Normalizer\json\ComplexDataDefinitionNormalizer
     tags:
       - { name: normalizer, priority: 20 }

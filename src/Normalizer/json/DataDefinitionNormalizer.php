@@ -23,13 +23,6 @@ use Drupal\Core\TypedData\DataDefinitionInterface;
 class DataDefinitionNormalizer extends JsonNormalizerBase {
 
   /**
-   * The formats that the Normalizer can handle.
-   *
-   * @var array
-   */
-  protected $formats = ['schema_json'];
-
-  /**
    * The interface or class that this Normalizer supports.
    *
    * @var string
