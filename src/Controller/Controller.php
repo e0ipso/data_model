@@ -4,6 +4,7 @@ namespace Drupal\data_model\Controller;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Cache\CacheableResponse;
+use Drupal\Core\Cache\CacheableResponseInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\data_model\SchemaFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -34,7 +35,7 @@ class Controller extends ControllerBase {
    * @param \Drupal\data_model\SchemaFactory $typed_data_manager
    * @param \Drupal\Core\Cache\CacheableResponse $response
    */
-  public function __construct(SerializerInterface $serializer, SchemaFactory $schema_factory, CacheableResponse $response) {
+  public function __construct(SerializerInterface $serializer, SchemaFactory $schema_factory, CacheableResponseInterface $response) {
     $this->serializer = $serializer;
     $this->schemaFactory = $schema_factory;
     $this->response = $response;
@@ -73,7 +74,7 @@ class Controller extends ControllerBase {
   public function serialize($entity_type_id, $bundle, Request $request) {
     // For now, we'll manually inspect the Accept header in the controller. This
     // is not a great idea, but will do for now.
-    list($data_format, $described_media_type) = $this->parseFormatNames($request);
+    list($data_format, $described_media_type) = $this->extractFormatNames($request);
 
     // Load the data to serialize from the route information on the current
     // request.
@@ -95,7 +96,7 @@ class Controller extends ControllerBase {
   }
 
   /**
-   * Helper function that inspects the Accept header to extract the formats.
+   * Helper function that inspects the request to extract the formats.
    *
    * Extracts the format of the response and media type being described.
    *
@@ -106,23 +107,11 @@ class Controller extends ControllerBase {
    *   An array containing the format of the output and the media type being
    *   described.
    */
-  protected function parseFormatNames(Request $request) {
-    $accept = $request->headers->get('Accept');
-    $parts = explode(';', $accept);
-    $media_type = trim(array_shift($parts));
-    $parts = array_map(function ($part) {
-      return trim($part);
-    }, $parts);
-    $param_name = 'describes=';
-    $parts = array_filter($parts, function ($part) use ($param_name) {
-      return strpos($part, $param_name) !== FALSE;
-    });
-    $parts = array_map(function ($part) use ($param_name) {
-      $start = strpos($part, $param_name) + strlen($param_name);
-      return substr($part, $start);
-    }, $parts);
-    $described_media_type = reset($parts);
-    return [$request->getFormat($media_type), $described_media_type];
+  protected function extractFormatNames(Request $request) {
+    return [
+      $request->getRequestFormat(),
+      $request->query->get('_describes'),
+    ];
   }
 
 }
