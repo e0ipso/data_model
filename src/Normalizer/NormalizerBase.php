@@ -81,8 +81,8 @@ abstract class NormalizerBase extends SerializationNormalizerBase implements Den
       return TRUE;
     }
 
-    list($data_format, $described_media_type) = explode(':', $format);
-    return $data_format == $this->format && $this->describedMediaType == $described_media_type;
+    $parts = explode(':', $format);
+    return $parts[0] == $this->format && isset($parts[1]) && $this->describedMediaType == $parts[1];
   }
 
 }
