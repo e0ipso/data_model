@@ -79,11 +79,6 @@ services:
   # ----------------------------------------------------------------------------
   # - 2. JSON-API format.
   # ----------------------------------------------------------------------------
-  serializer.normalizer.data_reference_definition.schema_json.jsonapi:
-    class: Drupal\data_model\Normalizer\jsonapi\DataReferenceDefinitionNormalizer
-    arguments: ['@entity_type.manager']
-    tags:
-      - { name: normalizer, priority: 25 }
   serializer.normalizer.complex_data_definition.schema_json.jsonapi:
     class: Drupal\data_model\Normalizer\jsonapi\ComplexDataDefinitionNormalizer
     tags:
@@ -94,6 +89,7 @@ services:
       - { name: normalizer, priority: 30 }
   serializer.normalizer.relationship_field_definition.schema_json.jsonapi:
     class: Drupal\data_model\Normalizer\jsonapi\RelationshipFieldDefinitionNormalizer
+    arguments: ['@plugin.manager.field.field_type']
     tags:
       - { name: normalizer, priority: 35 }
   serializer.normalizer.list_data_definition.schema_json.jsonapi:

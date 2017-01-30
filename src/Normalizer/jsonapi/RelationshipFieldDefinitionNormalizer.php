@@ -4,6 +4,7 @@ namespace Drupal\data_model\Normalizer\jsonapi;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
 use \Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Field\FieldTypePluginManagerInterface;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 
 /**
@@ -23,6 +24,20 @@ class RelationshipFieldDefinitionNormalizer extends ListDataDefinitionNormalizer
   protected $supportedInterfaceOrClass = '\Drupal\Core\Field\FieldDefinitionInterface';
 
   /**
+   * @var \Drupal\Core\Field\FieldTypePluginManager
+   */
+  protected $fieldTypeManager;
+
+  /**
+   * RelationshipFieldDefinitionNormalizer constructor.
+   *
+   * @param \Drupal\Core\Field\FieldTypePluginManager $field_type_manager
+   */
+  public function __construct(FieldTypePluginManagerInterface $field_type_manager) {
+    $this->fieldTypeManager = $field_type_manager;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function supportsNormalization($data, $format = NULL) {
@@ -30,9 +45,7 @@ class RelationshipFieldDefinitionNormalizer extends ListDataDefinitionNormalizer
       return FALSE;
     }
     $type = $data->getItemDefinition()->getFieldDefinition()->getType();
-    /** @var \Drupal\Core\Field\FieldTypePluginManager $field_type_manager */
-    $field_type_manager = \Drupal::service('plugin.manager.field.field_type');
-    $class = $field_type_manager->getPluginClass($type);
+    $class = $this->fieldTypeManager->getPluginClass($type);
     // Deal only with entity reference fields and descendants.
     return $class == EntityReferenceItem::class || is_subclass_of($class, EntityReferenceItem::class);
   }
