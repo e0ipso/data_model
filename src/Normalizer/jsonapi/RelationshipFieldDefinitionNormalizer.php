@@ -10,8 +10,8 @@ use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 /**
  * Normalizer for RelationshipFieldDefinitionNormalizer objects.
  *
- * This normalizes the JSON-API relationships. This normalizer shortcuts the
- * recursion for the entity reference field. A JSON-API relationship is what it
+ * This normalizes the JSON API relationships. This normalizer shortcuts the
+ * recursion for the entity reference field. A JSON API relationship is what it
  * is, regardless of how Drupal stores the relationship.
  */
 class RelationshipFieldDefinitionNormalizer extends ListDataDefinitionNormalizer {

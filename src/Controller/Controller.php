@@ -74,15 +74,16 @@ class Controller extends ControllerBase {
   public function serialize($entity_type_id, $bundle, Request $request) {
     // For now, we'll manually inspect the Accept header in the controller. This
     // is not a great idea, but will do for now.
-    list($data_format, $described_media_type) = $this->extractFormatNames($request);
+    $parts = $this->extractFormatNames($request);
+    $parts[1] = isset($parts[1]) ? $parts[1] : '';
 
     // Load the data to serialize from the route information on the current
     // request.
     $schema = $this->schemaFactory->create($entity_type_id, $bundle);
     // Serialize the entity type/bundle definition.
-    $format = sprintf('%s:%s', $data_format, $described_media_type);
+    $format = implode(':', $parts);
     $content = $this->serializer->serialize($schema, $format, [
-      'described_media_type' => $described_media_type,
+      'described_media_type' => $parts[1],
     ]);
 
     // Finally, set the contents of the response and return it.
@@ -91,7 +92,7 @@ class Controller extends ControllerBase {
       ->addCacheContexts(['headers:Accept']);
     $this->response->addCacheableDependency($cacheable_dependency);
     $this->response->setContent($content);
-    $this->response->headers->set('Content-Type', $request->getMimeType($data_format));
+    $this->response->headers->set('Content-Type', $request->getMimeType($parts[0]));
     return $this->response;
   }
 

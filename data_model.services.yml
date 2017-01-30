@@ -77,7 +77,7 @@ services:
     tags:
       - { name: normalizer, priority: 10 }
   # ----------------------------------------------------------------------------
-  # - 2. JSON-API format.
+  # - 2. JSON API format.
   # ----------------------------------------------------------------------------
   serializer.normalizer.complex_data_definition.schema_json.jsonapi:
     class: Drupal\data_model\Normalizer\jsonapi\ComplexDataDefinitionNormalizer
