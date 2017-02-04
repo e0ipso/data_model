@@ -104,3 +104,44 @@ services:
     class: Drupal\data_model\Normalizer\jsonapi\SchemataSchemaNormalizer
     tags:
       - { name: normalizer, priority: 10 }
+  # ----------------------------------------------------------------------------
+  # - 3. HAL+JSON format.
+  # ----------------------------------------------------------------------------
+  # HAL+JSON version of the Data Reference normalizer.
+  serializer.normalizer.data_reference_definition.schema_json.hal_json:
+    class: Drupal\data_model\Normalizer\hal\DataReferenceDefinitionNormalizer
+    arguments: ['@entity_type.manager', '@rest.link_manager']
+    tags:
+      - { name: normalizer, priority: 30 }
+
+  # Normalize complex data properties for HAL.
+  # This services is primarily used to short-circuit merging normalization of
+  # data references to the schema root.
+  serializer.normalizer.complex_data_definition.schema_json.hal_json:
+    class: Drupal\data_model\Normalizer\hal\ComplexDataDefinitionNormalizer
+    tags:
+      - { name: normalizer, priority: 25 }
+
+  # HAL version of FieldDefinition.
+  # This services is primarily used to short-circuit merging normalization of
+  # data references to the schema root.
+  serializer.normalizer.field_definition.schema_json.hal_json:
+    class: Drupal\data_model\Normalizer\hal\FieldDefinitionNormalizer
+    tags:
+      - { name: normalizer, priority: 35 }
+
+  # HAL version of the ListDataDefinition.
+  # This services is primarily used to short-circuit merging normalization of
+  # data references to the schema root.
+  serializer.normalizer.list_data_definition.schema_json.hal_json:
+    class: Drupal\data_model\Normalizer\hal\ListDataDefinitionNormalizer
+    tags:
+      - { name: normalizer, priority: 25 }
+  serializer.normalizer.schema.schema_json.hal_json:
+    class: Drupal\data_model\Normalizer\hal\SchemataSchemaNormalizer
+    tags:
+      - { name: normalizer, priority: 15 }
+  serializer.normalizer.data_definition.schema_json.hal_json:
+    class: Drupal\data_model\Normalizer\hal\DataDefinitionNormalizer
+    tags:
+      - { name: normalizer, priority: 10 }
