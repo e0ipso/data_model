@@ -22,6 +22,6 @@ abstract class JsonNormalizerBase extends NormalizerBase implements Denormalizer
    *
    * @var array
    */
-  protected $describedMediaType = 'application/json';
+  protected $describedFormat = 'json';
 
 }

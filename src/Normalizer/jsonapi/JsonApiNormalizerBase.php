@@ -22,6 +22,6 @@ abstract class JsonApiNormalizerBase extends NormalizerBase implements Denormali
    *
    * @var array
    */
-  protected $describedMediaType = 'application/vnd.api+json';
+  protected $describedFormat = 'api_json';
 
 }

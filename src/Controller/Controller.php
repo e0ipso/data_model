@@ -83,7 +83,7 @@ class Controller extends ControllerBase {
     // Serialize the entity type/bundle definition.
     $format = implode(':', $parts);
     $content = $this->serializer->serialize($schema, $format, [
-      'described_media_type' => $parts[1],
+      'described_format' => $parts[1],
     ]);
 
     // Finally, set the contents of the response and return it.
