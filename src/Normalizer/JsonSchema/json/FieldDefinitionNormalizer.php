@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\data_model\Normalizer\jsonapi;
+namespace Drupal\data_model\Normalizer\JsonSchema\json;
 
 use \Drupal\Core\Field\FieldStorageDefinitionInterface;
 
@@ -24,23 +24,20 @@ class FieldDefinitionNormalizer extends ListDataDefinitionNormalizer {
    * {@inheritdoc}
    */
   public function normalize($entity, $format = NULL, array $context = []) {
-    $cardinality = $entity->getFieldStorageDefinition()->getCardinality();
-    $context['cardinality'] = $cardinality;
     /* @var $entity \Drupal\Core\Field\FieldDefinitionInterface */
     $normalized = parent::normalize($entity, $format, $context);
 
     // Specify non-contextual default value as an example.
     $default_value = $entity->getDefaultValueLiteral();
     if (!empty($default_value)) {
-      $default_value = $cardinality == 1 ? reset($default_value) : $default_value;
-      $default_value = count($default_value) == 1 ? reset($default_value) : $default_value;
-      $normalized['properties']['attributes']['properties'][$context['name']]['default'] = $default_value;
+      $normalized['properties'][$context['name']]['default'] = $default_value;
     }
 
     // The cardinality is the configured maximum number of values the field can
     // contain. If unlimited, we do not include a maxItems attribute.
-    if ($cardinality != FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED && $cardinality != 1) {
-      $normalized['properties']['attributes']['properties'][$context['name']]['maxItems'] = $cardinality;
+    $cardinality = $entity->getFieldStorageDefinition()->getCardinality();
+    if ($cardinality != FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED) {
+      $normalized['properties'][$context['name']]['maxItems'] = $cardinality;
     }
 
     return $normalized;

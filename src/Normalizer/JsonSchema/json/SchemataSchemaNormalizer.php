@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\data_model\Normalizer\jsonapi;
+namespace Drupal\data_model\Normalizer\JsonSchema\json;
 
 use Drupal\Core\Url;
 use Drupal\data_model\Schema\SchemaInterface;
@@ -9,7 +9,7 @@ use Drupal\Component\Utility\NestedArray;
 /**
  * Primary normalizer for SchemaInterface objects.
  */
-class SchemataSchemaNormalizer extends JsonApiNormalizerBase {
+class SchemataSchemaNormalizer extends JsonNormalizerBase {
 
   /**
    * The interface or class that this Normalizer supports.

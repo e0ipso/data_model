@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\data_model\Normalizer\jsonapi;
+namespace Drupal\data_model\Normalizer\JsonSchema\json;
 
 use Drupal\Core\TypedData\ComplexDataDefinitionInterface;
 use Drupal\Core\TypedData\DataReferenceTargetDefinition;
@@ -33,18 +33,13 @@ class ComplexDataDefinitionNormalizer extends DataDefinitionNormalizer {
     $normalized['type'] = 'object';
 
     // Retrieve 'properties' and possibly 'required' nested arrays.
-    $property_definitions = $entity->getPropertyDefinitions();
     $properties = $this->normalizeProperties(
-      $property_definitions,
+      $entity->getPropertyDefinitions(),
       $format,
       $context
     );
 
     $normalized = NestedArray::mergeDeep($normalized, $properties);
-    if (count($property_definitions) == 1) {
-      // If there is only one property, JSON API does not use the complex data.
-      return $normalized['properties'][key($property_definitions)];
-    }
     return $normalized;
   }
 

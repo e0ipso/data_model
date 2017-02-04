@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\data_model\Normalizer\hal;
+namespace Drupal\data_model\Normalizer\JsonSchema\hal;
 
-use Drupal\data_model\Normalizer\json\SchemataSchemaNormalizer as JsonSchemataSchemaNormalizer;
+use Drupal\data_model\Normalizer\JsonSchema\json\SchemataSchemaNormalizer as JsonSchemataSchemaNormalizer;
 
 /**
  * Extends the base SchemataSchema normalizer for JSON with HAL+JSON elements.

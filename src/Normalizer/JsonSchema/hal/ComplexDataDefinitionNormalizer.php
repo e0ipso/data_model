@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\data_model\Normalizer\hal;
+namespace Drupal\data_model\Normalizer\JsonSchema\hal;
 
-use Drupal\data_model\Normalizer\json\ComplexDataDefinitionNormalizer as JsonComplexDataDefinitionNormalizer;
+use Drupal\data_model\Normalizer\JsonSchema\json\ComplexDataDefinitionNormalizer as JsonComplexDataDefinitionNormalizer;
 
 /**
  * Normalizer for ComplexDataDefinitionInterface for HAL.
