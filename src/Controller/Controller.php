@@ -82,9 +82,7 @@ class Controller extends ControllerBase {
     $schema = $this->schemaFactory->create($entity_type_id, $bundle);
     // Serialize the entity type/bundle definition.
     $format = implode(':', $parts);
-    $content = $this->serializer->serialize($schema, $format, [
-      'described_format' => $parts[1],
-    ]);
+    $content = $this->serializer->serialize($schema, $format);
 
     // Finally, set the contents of the response and return it.
     $this->response->addCacheableDependency($schema);
