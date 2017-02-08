@@ -57,9 +57,8 @@ class Controller extends ControllerBase {
    *
    * We have 2 different data formats involved. One is the schema format (for
    * instance JSON Schema) and the other one is the format that the schema is
-   * describing (for instance jsonapi, json, hal+json, …). Ideally we should be
-   * able to use the mime type to pass in both formats. Something like:
-   * Accept: application/schema+json; describes=jsonapi should do.
+   * describing (for instance jsonapi, json, hal+json, …). We need to provide
+   * both formats. Something like: ?_format=schema_json&_describes=api_json
    *
    * @param string $entity_type_id
    *   The entity type ID to describe.
@@ -72,10 +71,7 @@ class Controller extends ControllerBase {
    *   The response object.
    */
   public function serialize($entity_type_id, $bundle, Request $request) {
-    // For now, we'll manually inspect the Accept header in the controller. This
-    // is not a great idea, but will do for now.
     $parts = $this->extractFormatNames($request);
-    $parts[1] = isset($parts[1]) ? $parts[1] : '';
 
     // Load the data to serialize from the route information on the current
     // request.
@@ -87,7 +83,7 @@ class Controller extends ControllerBase {
     // Finally, set the contents of the response and return it.
     $this->response->addCacheableDependency($schema);
     $cacheable_dependency = (new CacheableMetadata())
-      ->addCacheContexts(['headers:Accept']);
+      ->addCacheContexts(['url.query_args:_describes']);
     $this->response->addCacheableDependency($cacheable_dependency);
     $this->response->setContent($content);
     $this->response->headers->set('Content-Type', $request->getMimeType($parts[0]));
@@ -109,7 +105,7 @@ class Controller extends ControllerBase {
   protected function extractFormatNames(Request $request) {
     return [
       $request->getRequestFormat(),
-      $request->query->get('_describes'),
+      $request->query->get('_describes', ''),
     ];
   }
 
