@@ -25,7 +25,14 @@ Currently, the only way to output these formats is using the
 
 ## Usage
 You can obtain the schema either making a request to an exposed route or by
-using the programatic API.
+using the programmatic API.
+
+Each output format should be contained in its own submodule. Enable the
+submodule for the format that you need first.
+
+```
+drush en -y data_model_json_schema
+```
 
 ### Request
 Create a request against `/data-model/{entity_type}/{bundle}?_format={output_format}&_describes={described_format}`

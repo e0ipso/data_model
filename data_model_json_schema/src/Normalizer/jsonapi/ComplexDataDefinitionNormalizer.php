@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\data_model\Normalizer\JsonSchema\jsonapi;
+namespace Drupal\data_model_json_schema\Normalizer\jsonapi;
 
 use Drupal\Core\TypedData\ComplexDataDefinitionInterface;
 use Drupal\Core\TypedData\DataReferenceTargetDefinition;

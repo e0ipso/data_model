@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\data_model\Normalizer\JsonSchema\hal;
+namespace Drupal\data_model_json_schema\Normalizer\hal;
 
-use Drupal\data_model\Normalizer\JsonSchema\json\DataReferenceDefinitionNormalizer as JsonDataReferenceDefinitionNormalizer;
+use Drupal\data_model_json_schema\Normalizer\json\DataReferenceDefinitionNormalizer as JsonDataReferenceDefinitionNormalizer;
 use Drupal\schemata\SchemaUrl;
 use Drupal\rest\LinkManager\LinkManagerInterface;
 use Drupal\Core\Entity\EntityTypeManager;

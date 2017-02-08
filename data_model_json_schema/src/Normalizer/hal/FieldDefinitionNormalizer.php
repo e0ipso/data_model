@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\data_model\Normalizer\JsonSchema\hal;
+namespace Drupal\data_model_json_schema\Normalizer\hal;
 
-use Drupal\data_model\Normalizer\JsonSchema\json\FieldDefinitionNormalizer as JsonFieldDefinitionNormalizer;
+use Drupal\data_model_json_schema\Normalizer\json\FieldDefinitionNormalizer as JsonFieldDefinitionNormalizer;
 
 /**
  * HAL normalizer for FieldDefinition objects.
